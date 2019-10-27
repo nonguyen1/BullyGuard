@@ -1,4 +1,4 @@
-from creds import BOT_CLIENT_ID, BOT_CLIENT_SECRET, BOT_USER_TOKEN
+from creds import BOT_CLIENT_TOKEN, DEMO_BOT_NICE_TOKEN, DEMO_BOT_MEAN_TOKEN
 
 import discord
 import pickle
@@ -111,4 +111,4 @@ class MyClient(discord.Client):
 if __name__ == '__main__':
     client = MyClient()
     client.set_processor(Ranker(), Model())
-    client.run(BOT_USER_TOKEN)
+    client.run(BOT_CLIENT_TOKEN)
