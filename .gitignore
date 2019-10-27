@@ -2,3 +2,5 @@
 env_*
 tokens.py
 SlackBot/__pycache__
+creds.py
+DiscordBot/__pycache__
