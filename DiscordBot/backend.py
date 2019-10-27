@@ -7,6 +7,7 @@ import math
 import pickle
 import sklearn
 
+
 class Data():
     pass
 
@@ -20,6 +21,10 @@ class Ranker():
 
     def save_rank(self):
         pickle.dump(self.rank, open(self.rank_data_file, 'wb'))
+
+    def reset_all(self):
+        for key in self.rank.keys():
+            self.rank[key] = 0
 
     def update(self, user_id, update_score):
         user_id = user_id.__str__()
@@ -64,7 +69,7 @@ class Model():
         self.sent = pickle.load(open(SENTIMENT_FILENAME, 'rb'))
 
     def get_score(self, msg_content):
-        #import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
         msg = self.sent.count_vect.transform([msg_content])
         result = self.model.predict_proba(msg)
         return result[0][1]
@@ -86,6 +91,8 @@ class MyClient(discord.Client):
         await self.handle_message(message)
         if message.content == '!rank':
             await message.channel.send('display whatever')
+        if message.content == '!clean':
+            self.ranker.reset_all()
 
     async def update_role(self, user_id, new_role, message):
         await message.channel.send(f"{user_id} gets new role {new_role}!")
