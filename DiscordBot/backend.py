@@ -65,7 +65,9 @@ class Model():
 
     def get_score(self, msg_content):
         import pdb; pdb.set_trace()
-        self.model.predict([msg_content])
+        msg = self.sent.count_vect.transform([msg_content])
+        result = self.model.predict(msg)
+        return result[0][1]
 
 
 class MyClient(discord.Client):
