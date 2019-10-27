@@ -4,6 +4,11 @@ import discord
 import pickle
 import os
 import math
+import pickle
+import sklearn
+
+class Data():
+    pass
 
 
 class Ranker():
@@ -50,13 +55,17 @@ class Ranker():
 
 
 class Model():
-    # FIXME: FAKE
     def __init__(self):
-        pass
+        # How to load the model on the server
+        MODEL_FILENAME = "../ml/saved_models/classifier.pkl"
+        SENTIMENT_FILENAME = "../ml/saved_models/sentiment.pkl"
+        # Import our machine learning model here.
+        self.model = pickle.load(open(MODEL_FILENAME, 'rb'))
+        self.sent = pickle.load(open(SENTIMENT_FILENAME, 'rb'))
 
     def get_score(self, msg_content):
-        print(f"MLing: score for {msg_content}")
-        return int(msg_content)/10
+        import pdb; pdb.set_trace()
+        self.model.predict([msg_content])
 
 
 class MyClient(discord.Client):

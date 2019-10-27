@@ -1,1 +1,2 @@
 discord.py==0.16.12
+scikit-learn==0.19.1
