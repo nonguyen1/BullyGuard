@@ -64,9 +64,9 @@ class Model():
         self.sent = pickle.load(open(SENTIMENT_FILENAME, 'rb'))
 
     def get_score(self, msg_content):
-        import pdb; pdb.set_trace()
+        #import pdb; pdb.set_trace()
         msg = self.sent.count_vect.transform([msg_content])
-        result = self.model.predict(msg)
+        result = self.model.predict_proba(msg)
         return result[0][1]
 
 
@@ -90,6 +90,7 @@ class MyClient(discord.Client):
     async def update_role(self, user_id, new_role, message):
         await message.channel.send(f"{user_id} gets new role {new_role}!")
         guild = message.author.guild
+        import pdb; pdb.set_trace()
         await message.author.add_roles(discord.utils.get(guild.roles, name=str(new_role)))
 
         # raise NotImplementedError()
