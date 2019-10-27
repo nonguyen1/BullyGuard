@@ -55,8 +55,11 @@ class Ranker():
             new_score = 4
         return new_score
 
-    def get_rank(self, user_id):
-        return 1
+    def get_print(self):
+        my_str = []
+        for key, val in self.rank.items():
+            my_str.append(f"{key}\t{val}\n")
+        return ''.join(my_str)
 
 
 class Model():
@@ -92,7 +95,7 @@ class MyClient(discord.Client):
         # TODO: Clean message for better ML
         await self.handle_message(message)
         if message.content == '!rank':
-            await message.channel.send('display whatever')
+            await message.channel.send(self.ranker.get_print())
         if message.content == '!clean':
             self.ranker.reset_all()
 
