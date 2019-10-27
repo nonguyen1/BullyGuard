@@ -114,7 +114,7 @@ class MyClient(discord.Client):
         user_id = message.author
         msg_content = message.content
         msg_score = self.model.get_score(msg_content)
-        await channel.send(f"Score {msg_score}")
+        await channel.send(f"Score {msg_score:.5f}")
         do_update_role, new_role = self.ranker.update(user_id, msg_score)
         if do_update_role:
             await self.update_role(user_id, new_role, message)
