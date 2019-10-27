@@ -62,8 +62,10 @@ class Ranker():
 class Model():
     def __init__(self):
         # How to load the model on the server
-        MODEL_FILENAME = "../ml/saved_models/classifier.pkl"
-        SENTIMENT_FILENAME = "../ml/saved_models/sentiment.pkl"
+        #MODEL_FILENAME = "../ml/saved_models/classifier.pkl"
+        MODEL_FILENAME = "../ml/saved_models/classifier3.pkl"
+        SENTIMENT_FILENAME = "../ml/saved_models/sentiment3.pkl"
+        #SENTIMENT_FILENAME = "../ml/saved_models/sentiment.pkl"
         # Import our machine learning model here.
         self.model = pickle.load(open(MODEL_FILENAME, 'rb'))
         self.sent = pickle.load(open(SENTIMENT_FILENAME, 'rb'))
