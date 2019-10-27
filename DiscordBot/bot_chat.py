@@ -8,9 +8,9 @@ import multiprocessing as mp
 # TODO: Change this from hard code
 MR_NICE = "MrNice#5609"
 MR_MEAN = "MrMean#4769"
-MR_NICE_CONV = ['You best think twice before you try to steal my stuff bitch.',
+MR_MEAN_CONV = ['You best think twice before you try to steal my stuff bitch.',
                 'Yeah you did you lying two faced whore.', 'DUMB FUCK. ']
-MR_MEAN_CONV = ['I didn\'t steal anything dude.', 'Please. Don\'t use mean words like that.', 'You hurt my feelings']
+MR_NICE_CONV = ['I didn\'t steal anything dude.', 'Please. Don\'t use mean words like that.', 'You hurt my feelings']
 DEMO_CONV_LEN = 3
 
 

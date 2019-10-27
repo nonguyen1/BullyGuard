@@ -28,7 +28,7 @@ class Ranker():
 
     def update(self, user_id, update_score):
         user_id = user_id.__str__()
-        score_change = update_score - 0.5
+        score_change = (update_score - 0.35) * 2
 
         if user_id in self.rank.keys():
             role_before = math.floor(self.rank[user_id])
