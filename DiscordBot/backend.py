@@ -1,17 +1,23 @@
 from creds import BOT_CLIENT_ID, BOT_CLIENT_SECRET, BOT_USER_TOKEN
 
 import discord
+import pickle
+import os
 import math
 
 
 class Ranker():
-    def __init__(self):
-        self.rank = dict()
+    def __init__(self, rank_data_file='ranking.pkl'):
+        self.rank_data_file = rank_data_file
+        self.rank = {}
+        if os.path.exists(rank_data_file):
+            self.rank = pickle.load(open(self.rank_data_file, 'rb'))
 
     def save_rank(self):
-        pass
+        pickle.dump(self.rank, open(self.rank_data_file, 'wb'))
 
     def update(self, user_id, update_score):
+        user_id = user_id.__str__()
         score_change = update_score - 0.5
 
         if user_id in self.rank.keys():
@@ -28,7 +34,6 @@ class Ranker():
                 return False, 0
         else:
             self.rank[user_id] = self.fix_score(score_change)
-            print(type(self.rank[user_id]))
             self.save_rank()
             return True, math.floor(self.rank[user_id])
 
@@ -51,7 +56,7 @@ class Model():
 
     def get_score(self, msg_content):
         print(f"MLing: score for {msg_content}")
-        return int(msg_content)
+        return int(msg_content)/10
 
 
 class MyClient(discord.Client):
@@ -67,22 +72,26 @@ class MyClient(discord.Client):
         if message.author == self.user:
             return
         # TODO: Clean message for better ML
-        await self.handle_message(message, message.channel)
+        await self.handle_message(message)
         if message.content == '!rank':
             await message.channel.send('display whatever')
 
-    async def update_role(self, user_id, new_role, broadcast_ch):
-        await broadcast_ch.send(f"{user_id} gets new role {new_role}!")
+    async def update_role(self, user_id, new_role, message):
+        await message.channel.send(f"{user_id} gets new role {new_role}!")
+        guild = message.author.guild
+        await message.author.add_roles(discord.utils.get(guild.roles, name=str(new_role)))
+
         # raise NotImplementedError()
 
-    async def handle_message(self, message, channel):
+    async def handle_message(self, message):
+        channel = message.channel
         user_id = message.author
         msg_content = message.content
         msg_score = self.model.get_score(msg_content)
         await channel.send(f"Score {msg_score}")
         do_update_role, new_role = self.ranker.update(user_id, msg_score)
         if do_update_role:
-            await self.update_role(user_id, new_role, channel)
+            await self.update_role(user_id, new_role, message)
 
 
 if __name__ == '__main__':
