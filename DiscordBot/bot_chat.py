@@ -8,16 +8,24 @@ import multiprocessing as mp
 # TODO: Change this from hard code
 MR_NICE = "MrNice#5609"
 MR_MEAN = "MrMean#4769"
-# the multiprocessing queue
-q = mp.Queue()
-
-talk_state = 0
+MR_NICE_CONV = ["Hello", "hey", "Bye"]
+MR_MEAN_CONV = ["Hee", "Fuck", "Fuck off"]
+DEMO_CONV_LEN = 3
 
 
 class MyClient(discord.Client):
     def set_id(self, the_id):
         self.id = the_id
-        self.respond_to = MR_NICE if the_id == 1 else MR_MEAN
+        if the_id == 0:
+            self.respond_to = MR_MEAN
+            self.conv = MR_NICE_CONV
+            self.current_msg_idx = 0
+        elif the_id == 1:
+            self.respond_to = MR_NICE
+            self.conv = MR_MEAN_CONV
+            self.current_msg_idx = -1
+        else:
+            raise NotImplementedError("Only 2 chatters are implemented")
 
     async def on_ready(self):
         print('Logged on as', self.user)
@@ -29,10 +37,29 @@ class MyClient(discord.Client):
             return
         elif message.author.__str__() == self.respond_to:
             time.sleep(2)
-            await message.channel.send("Responder")
+            conv_msg = self.get_next_msg()
+            if conv_msg:
+                await message.channel.send(conv_msg)
         if message.content == '!start':
             if self.id == 0:  # Starter of this conversation
-                await message.channel.send('Starter')
+                self.current_msg_idx = -1
+                conv_msg = self.get_next_msg()
+                if conv_msg:
+                    await message.channel.send(conv_msg)
+
+    def get_next_msg(self):
+        # TODO: Fix this nasty logic
+        self.current_msg_idx += 1
+        if self.current_msg_idx >= DEMO_CONV_LEN:
+            return None
+        else:
+            if self.id == 1 and self.current_msg_idx == DEMO_CONV_LEN - 1:
+                conv = self.conv[self.current_msg_idx]
+                self.current_msg_idx = -1
+                return conv
+            else:
+                return self.conv[self.current_msg_idx]
+
 
 
 def bot_process(pid):
@@ -43,15 +70,6 @@ def bot_process(pid):
         bot.run(DEMO_BOT_NICE_TOKEN)
     elif pid == 1:
         bot.run(DEMO_BOT_MEAN_TOKEN)
-
-
-#
-#
-# def mr_mean_process():
-#     print("Mean process")
-#     mrmean = MyClient()
-#     mrmean.set_id(1)
-#     mrmean.run(DEMO_BOT_MEAN_TOKEN)
 
 
 if __name__ == '__main__':
