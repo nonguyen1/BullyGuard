@@ -90,7 +90,9 @@ class MyClient(discord.Client):
     async def update_role(self, user_id, new_role, message):
         await message.channel.send(f"{user_id} gets new role {new_role}!")
         guild = message.author.guild
-        import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
+        for i in range(5):
+            await message.author.remove_roles(discord.utils.get(guild.roles, name=str(i)))
         await message.author.add_roles(discord.utils.get(guild.roles, name=str(new_role)))
 
         # raise NotImplementedError()
