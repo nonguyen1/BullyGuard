@@ -24,7 +24,7 @@ class Ranker():
 
     def reset_all(self):
         for key in self.rank.keys():
-            self.rank[key] = 0
+            self.rank[key] = 0.0
 
     def update(self, user_id, update_score):
         user_id = user_id.__str__()
@@ -50,15 +50,15 @@ class Ranker():
     def fix_score(self, new_score):
         """ Makes sure score within range """
         if new_score < 0:
-            new_score = 0
+            new_score = 0.0
         if new_score > 4:
-            new_score = 4
+            new_score = 4.0
         return new_score
 
     def get_print(self):
         my_str = []
         for key, val in self.rank.items():
-            my_str.append(f"{key}\t{val}\n")
+            my_str.append(f"\n{val:.3f}\t{key}")
         return ''.join(my_str)
 
 
