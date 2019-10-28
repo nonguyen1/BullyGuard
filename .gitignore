@@ -5,3 +5,6 @@ SlackBot/__pycache__
 creds.py
 DiscordBot/__pycache__
 ranking.pkl
+**/.DS_Store
+**/__pycache__/
+**/.ipynb_checkpoints/
